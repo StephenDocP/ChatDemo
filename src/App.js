@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import logo from "./logo.svg";
+import "./App.css";
+
+import { firestoreQueryHook } from "./lib/firestoreHook";
+import { MessageForm } from "./components/MessageForm";
 
 function App() {
+  const { data: messages, loading } = firestoreQueryHook("messages");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="messages">
+        {messages &&
+          messages.map(message => (
+            <div>
+              <p>{message.content}</p>
+              <span>{message.username}</span>
+            </div>
+          ))}
+      </div>
+      <MessageForm />
     </div>
   );
 }
